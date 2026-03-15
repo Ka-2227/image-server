@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Hosting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo"><a href="index.html">Image Hosting</a></div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="upload_form.html">Downloads</a>
+            <a href="images.html">Gallery</a>
+            <a href="doc.html">Documentation</a>
+            <a href="#"></a>
+        </nav>
+        <div class="search-signin">
+            <input type="text" placeholder="Search" readonly>
+            <button>Sign in</button>
+        </div>
+    </header>
+
+    <div class="container main">
+        <div class="header-text">
+            <h1>Upload Photos</h1>
+            <p>Upload selfies, memes, or any fun pictures here.</p>
+            <button class="cta-button"><a href="upload_form.html">Tail-ent Showcase</a></button>
+        </div>
+        <div class="animals">
+            <div class="relative h-[500px] max-w-6xl mx-auto mt-10 overflow-hidden">
+                <img src="Images/autumn-leaves-assortment-with-copy-space.jpg" alt="image" class="absolute top-0 left-0 w-[30%] rounded-3xl shadow-lg z-20">
+                <img src="Images/4.png" alt="image-dog" class="absolute bottom-0 left-16 w-[15%] rounded-3xl shadow-lg z-30">
+                <img id="image1" src="Images/4.jpg" alt="image" class="absolute top-16 left-1/4 w-[700px] rounded-3xl shadow-lg z-40">
+
+                <div class="absolute top-0 right-0 w-[15%] rounded-3xl shadow-lg z-20">
+                    <img src="Images/5.png" alt="" class="w-full rounded-3xl">
+                    <div class="absolute inset-0 flex justify-center items-center text-white text-4xl opacity-50"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-gray-300 mt-20">
+        <div class="text-gray-500 text-center py-4 mt-6">
+           <p>&copy; 2025 Image Hosting. ...................</p>
+        </div>
+    </footer>
+
+    <script src="js/index.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/dynamic-image.js"></script>
+</body>
+</html>

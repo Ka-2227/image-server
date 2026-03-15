@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Images Gallery</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/images.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <header class="flex flex-col md:flex-row items-center justify-between px-4 md:px-12 py-4 bg-[#151515] sticky top-0 z-50">
+        <div class="logo font-bold text-2xl uppercase text-white"><a href="index.html">Image Hosting</a></div>
+        <nav class="flex flex-wrap gap-4 mt-3 md:mt-0">
+            <a href="index.html" class="text-white hover:text-gray-300">Home</a>
+            <a href="upload_form.html" class="text-white hover:text-gray-300">Downloads</a>
+            <a href="images.html" class="text-white hover:text-gray-300">Gallery</a>
+            <a href="doc.html" class="text-white hover:text-gray-300">Documentation</a>
+            <a href="#" class="text-white hover:text-gray-300"></a>
+        </nav>
+        <div class="search-signin">
+            <input type="text" placeholder="Search" readonly>
+            <button>Sign in</button>
+        </div>
+    </header>
+
+    <div class="container main">
+        <div class="header-text">
+            <h1>Upload Photos</h1>
+            <p>Upload selfies, memes, or any fun pictures here.</p>
+        </div>
+
+        <div class="choose">
+            <a href="upload_form.html" class="text_upload">Upload</a>
+            <a href="images.html" class="text_image">Images</a>
+        </div>
+
+        <div class="images-container">
+            <div class="images-header">
+                <div class="header-name">Name</div>
+                <div class="header-url">Url</div>
+                <div class="header-delete">Delete</div>
+            </div>
+            <div class="images-list" id="images-list"></div>
+
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <p>No images uploaded yet</p>
+                <a href="upload_form.html">Upload your first image</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+
+    </footer>
+
+    <script src="js/storage.js"></script>
+    <script src="js/images-list.js"></script>
+</body>
+</html>
+
+

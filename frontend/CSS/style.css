@@ -1,0 +1,100 @@
+:root {
+    --font-family: "Plus Jakarta Sans", sans-serif;
+    --second-family: "Plus Jakarta Sans", sans-serif;
+
+    
+}
+
+body {
+    margin: 0;
+    background-color: #151515;
+    color: #f6f0f0;
+    font-family: var(--font-family);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background-color: #151515;
+    /* border-bottom: 1px solid rgb(255, 255, 255); */ 
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 24px;
+    text-transform: uppercase;
+    color: #f6f0f0;
+}
+
+nav a {
+    color: #f6f0f0;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 16px;
+}
+
+.search-signin {
+    display: flex;
+    align-items: center;
+}
+
+.search-signin input {
+    padding: 8px;
+    border-radius: 20px;
+    border: none;
+    margin-right: 15px;
+    width: 200px;
+}
+
+.search-signin button {
+    background: none;
+    color: #f6f0f0;
+    border: 1px solid #f6f0f0;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.main {
+    text-align: center;
+    padding: 10px;
+}
+
+.main h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.main p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #ccc;
+}
+
+.main a {
+    text-decoration: none;
+    color: #242222;
+}
+
+.cta-button {
+    padding: 12px 30px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #242222;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+}
+
+#image1 {
+    opacity: 1;
+    transition: opacity 0.4s ease;
+}
+
