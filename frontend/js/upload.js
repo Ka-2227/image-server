@@ -1,123 +1,83 @@
-const MAX_SIZE = 5 * 1024 * 1024 //5Mb
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif']
-
+cconst MAX_SIZE = 5 * 1024 * 1024;
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
 let currentUrl = '';
 
-function showStatus(message, type){
-    const status = document.getElementById('upload-status')
-    if(!status) return;
-
-    status.textContent = message
-    status.className = `upload-status ${type}`
-    status.style.display = 'block'
-
-    if(type === 'success'){
-        setTimeout(()=>{status.style.display = 'none'}, 5000)
-    }
+function showStatus(message, type) {
+    const status = document.getElementById('upload-status');
+    if (!status) return;
+    status.textContent = message;
+    status.className = `upload-status ${type}`;
+    status.style.display = 'block';
+    if (type === 'success') setTimeout(() => status.style.display = 'none', 5000);
 }
 
-
-function validateFile(file){
-    if(!ALLOWED_TYPES.includes(file.type)){
-        showStatus('Only .jpg, .png and .gif', 'error')
+function validateFile(file) {
+    if (!ALLOWED_TYPES.includes(file.type)) {
+        showStatus('Only .jpg, .png, .gif allowed', 'error');
         return false;
     }
-     if(file.size > MAX_SIZE){
-        showStatus('File too large! Maximum file size is 5 Mb.', 'error')
+    if (file.size > MAX_SIZE) {
+        showStatus('File too large! Max 5 MB', 'error');
         return false;
-     }
-
-     return true;
+    }
+    return true;
 }
 
+async function handleFile(file) {
+    if (!file || !validateFile(file)) return;
+    showStatus('Uploading...', 'info');
 
-async function handleFile(file){
-    if(!file || !validateFile(file)) return;
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
 
-    showStatus('Uploading...', 'info')
+        const response = await fetch('/api/upload', {   // ←←← ВАЖНО: слеш в начале!
+            method: 'POST',
+            body: formData
+        });
 
-    try{
-        const base64 = await fileToBase64(file)
-        const success = saveImage(file.name, base64, file.size)
+        const result = await response.json();
 
-        if(success) {
-            showStatus('Upload successful!', 'success')
-        
-
-        const input = document.getElementById('current-upload-input')
-        if(input){
-            input.value = base64.substring(0, 50) + '...'
-            currentUrl = base64
-
+        if (response.ok) {
+            currentUrl = result.image.url;
+            document.getElementById('current-upload-input').value = currentUrl;
+            showStatus('Upload successful!', 'success');
+            alert(`✅ Загружено!\nID: ${result.image.id}\nСсылка: ${currentUrl}`);
+        } else {
+            showStatus(result.error || 'Ошибка сервера', 'error');
         }
-        document.getElementById('fileInput').value = ''
-    }else{
-        showStatus('Upload failed. Please try again', 'error')
-    }
-    }
-    catch(error){
-        showStatus('Upload failed' + error.message, 'error')
-        
+    } catch (error) {
+        showStatus('Upload failed: ' + error.message, 'error');
     }
 }
-
-async function copyUrl(){
-    if(!currentUrl) return;
-
-    try{
-        await navigator.clipboard.writeText(currentUrl)
-        showStatus('URL copied', 'success')
-
-        const btn = document.getElementById('copy-button')
-        const oldText = btn.textContent
-        btn.textContent = 'Copied' 
-        setTimeout(()=> btn.textContent = oldText, 2000)
-    } catch{ 
-        showStatus('Failed to copy URL', 'error')
-    }
-}
-
 
 document.addEventListener('DOMContentLoaded', () => {
     const dropArea = document.getElementById('drop-area')
     const fileInput = document.getElementById('fileInput')
     const browseBtn = document.querySelector('.send_file button')
+    
     const copyBtn = document.getElementById('copy-button')
-
-    dropArea.addEventListener('dragover', (e)=>{
-        e.preventDefault();
-        dropArea.classList.add('dragover')
-    })
-
-    dropArea.addEventListener('dragleave', (e)=>{
-        dropArea.classList.remove('dragover')
-    })
-
-    dropArea.addEventListener('drop', (e)=>{
-        e.preventDefault()
-        dropArea.classList.add('dragover')
-        if (e.dataTransfer.files[0]){
-            handleFile(e.dataTransfer.files[0])
-        }
-    })
-
-
-    fileInput.addEventListener('change', (e) => {
-        if(e.target.files[0]){
-            handleFile(e.target.files[0])
-
-        }
-    })
-
-    browseBtn.addEventListener('click', (e) =>{
-        e.preventDefault();
-        e.stopPropagation();
-        dropArea.classList.remove('dragover')
-        fileInput.click()
-    } )
-
     if (copyBtn) {
-        copyBtn.addEventListener('click', copyUrl)
+        copyBtn.addEventListener('click', copyUrl);
     }
+});
 
-})
+async function copyUrl() {
+    if (!currentUrl) return;
+    await navigator.clipboard.writeText(currentUrl);
+    showStatus('URL copied!', 'success');
+}
+
+
+
+
+
+async function copyUrl() {
+    if (!currentUrl) return;
+    try {
+        await navigator.clipboard.writeText(currentUrl);
+        showStatus('URL copied!', 'success');
+    } catch {
+        showStatus('Failed to copy URL', 'error');
+    }
+}

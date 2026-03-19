@@ -1,27 +1,22 @@
 import os
 from dotenv import load_dotenv
-
 load_dotenv()
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev-key')
-    DEBUG = os.getenv('DEBUG', 'True').lower()
-
-    #Настройка файлов
+    DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
+    
+    # Настройка файлов
     UPLOAD_FOLDER = 'images'
-    MAX_CONTENT_LENGTH = 5 * 1024 * 1024 #5мб
-    ALLOWED_EXTENCIONS = {'.jpg', '.jpeg', '.png', '.gif'}
-    ALLOWED_MIME_TYPES = {
-        'image/jpeg',
-        'image/png',
-        'image/gif'
-    }
-
+    MAX_CONTENT_LENGTH = 5 * 1024 * 1024  # 5 МБ
+    ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif'}
+    ALLOWED_MIME_TYPES = {'image/jpeg', 'image/png', 'image/gif'}
+    
     DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://postgres:admin@postgres:5432/image_db')
-
-    #Пагинация
+    
+    # Пагинация
     ITEMS_PER_PAGE = 10
-
-    #Папки для хранения данных
+    
+    # Папки
     LOGS_DIR = 'logs'
     BACKUPS_DIR = 'backup'

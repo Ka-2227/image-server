@@ -104,4 +104,7 @@ def delete_file(filename):
     except Exception as e:
         print(e)
         return False
-    
+
+def is_allowed_extension(filename):
+    ext = get_file_extension(filename)
+    return ext in Config.ALLOWED_EXTENSIONS
