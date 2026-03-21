@@ -13,26 +13,21 @@ def register_routes(app):
     def index():
         return "API работает. Фронтенд обслуживается через Nginx."
 
-    # ←←← НОВЫЙ МАРШРУТ ДЛЯ ПРОВЕРКИ
     @app.route('/api/')
     def api_root():
         return jsonify({
             'status': 'ok',
             'message': 'Image Hosting API работает ✅',
-            'version': '1.0',
-            'endpoints': {
-                'upload': '/api/upload (POST)',
-                'delete': '/api/delete/<id> (GET)',
-                'frontend': 'http://localhost:8080/upload_form.html'
-            }
+            'version': '1.0'
         })
 
+    # === ЗАГРУЗКА ===
     @app.route('/api/upload', methods=['POST'])
     def upload_file():
-        if 'file' not in request.files:
+        if 'image' not in request.files:         
             return jsonify({'error': 'Файл не выбран'}), 400
         
-        file = request.files['file']
+        file = request.files['image']
         if file.filename == '':
             return jsonify({'error': "Файл не выбран"}), 400
         
@@ -65,20 +60,27 @@ def register_routes(app):
             return jsonify({
                 'success': True,
                 'message': "Файл успешно загружен",
-                'image': {
-                    'id': image_id,
-                    'filename': new_filename,
-                    'original_name': file.filename,
-                    'size': format_file_size(file_size),
-                    'url': f"/images/{new_filename}",
-                    'delete_url': f'/api/delete/{image_id}'
-                }
+                'image': {'id': image_id, 'filename': new_filename}
             }), 201
         except Exception as e:
             log_error(f'Ошибка загрузки файла: {e}')
             return jsonify({'error': str(e)}), 500
 
-    @app.route('/api/delete/<int:image_id>')
+    # === СПИСОК ИЗОБРАЖЕНИЙ (для галереи) ===
+    @app.route('/api/images')
+    def get_images():
+        images, _ = Database.get_images()
+        return jsonify([{
+            'id': img.id,
+            'filename': img.filename,
+            'original_name': img.original_name,
+            'size': img.size,
+            'upload_time': img.upload_time.isoformat() if img.upload_time else None,
+            'file_type': img.file_type
+        } for img in images])
+
+    # === УДАЛЕНИЕ ===
+    @app.route('/api/delete/<int:image_id>', methods=['DELETE'])
     def delete_image(image_id):
         success_db, filename = Database.delete_image(image_id)
         if not success_db or not filename:
