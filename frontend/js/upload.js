@@ -1,4 +1,4 @@
-cconst MAX_SIZE = 5 * 1024 * 1024;
+const MAX_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
 let currentUrl = '';
 
@@ -31,7 +31,7 @@ async function handleFile(file) {
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetch('/api/upload', {   // ←←← ВАЖНО: слеш в начале!
+        const response = await fetch('http://localhost:8000/api/upload', {   // ←←← ВАЖНО: слеш в начале!
             method: 'POST',
             body: formData
         });

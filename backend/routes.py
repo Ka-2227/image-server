@@ -24,10 +24,10 @@ def register_routes(app):
     # === ЗАГРУЗКА ===
     @app.route('/api/upload', methods=['POST'])
     def upload_file():
-        if 'image' not in request.files:         
+        if 'file' not in request.files:        
             return jsonify({'error': 'Файл не выбран'}), 400
         
-        file = request.files['image']
+        file = request.files['file']
         if file.filename == '':
             return jsonify({'error': "Файл не выбран"}), 400
         
@@ -65,6 +65,16 @@ def register_routes(app):
         except Exception as e:
             log_error(f'Ошибка загрузки файла: {e}')
             return jsonify({'error': str(e)}), 500
+
+    return jsonify({
+            'success': True,
+            'message': "Файл успешно загружен",
+            'image': {
+                'id': image_id,
+                'filename': new_filename,
+                'url': f"http://localhost:8080/images/{new_filename}"   # ← добавь эту строку
+            }
+            }), 201
 
     # === СПИСОК ИЗОБРАЖЕНИЙ (для галереи) ===
     @app.route('/api/images')
