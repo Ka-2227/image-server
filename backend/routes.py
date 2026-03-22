@@ -21,10 +21,10 @@ def register_routes(app):
             'version': '1.0'
         })
 
-       # === ЗАГРУЗКА ===
+    # === ЗАГРУЗКА ===
     @app.route('/api/upload', methods=['POST'])
     def upload_file():
-        if 'file' not in request.files:          # ← теперь 'file' как в твоём JS
+        if 'file' not in request.files:
             return jsonify({'error': 'Файл не выбран'}), 400
         
         file = request.files['file']
@@ -37,6 +37,7 @@ def register_routes(app):
         try:
             file_data = file.read()
             file_size = len(file_data)
+            
             if file_size > Config.MAX_CONTENT_LENGTH:
                 return jsonify({'error': f"Файл слишком большой. Максимум {format_file_size(Config.MAX_CONTENT_LENGTH)}"}), 400
             
@@ -65,13 +66,12 @@ def register_routes(app):
                 'image': {
                     'id': image_id,
                     'filename': new_filename,
-                    'url': url                    # ← добавил специально для твоего JS
+                    'url': url
                 }
             }), 201
         except Exception as e:
             log_error(f'Ошибка загрузки файла: {e}')
             return jsonify({'error': str(e)}), 500
-        
         
     # === СПИСОК ИЗОБРАЖЕНИЙ (для галереи) ===
     @app.route('/api/images')
