@@ -21,10 +21,10 @@ def register_routes(app):
             'version': '1.0'
         })
 
-    # === ЗАГРУЗКА ===
+       # === ЗАГРУЗКА ===
     @app.route('/api/upload', methods=['POST'])
     def upload_file():
-        if 'file' not in request.files:        
+        if 'file' not in request.files:          # ← теперь 'file' как в твоём JS
             return jsonify({'error': 'Файл не выбран'}), 400
         
         file = request.files['file']
@@ -56,26 +56,23 @@ def register_routes(app):
                 delete_file(new_filename)
                 return jsonify({'error': "Ошибка сохранения в БД"}), 500
             
+            url = f"http://localhost:8080/images/{new_filename}"
+            
             log_success(f'Изображение сохранено {new_filename}')
             return jsonify({
                 'success': True,
                 'message': "Файл успешно загружен",
-                'image': {'id': image_id, 'filename': new_filename}
+                'image': {
+                    'id': image_id,
+                    'filename': new_filename,
+                    'url': url                    # ← добавил специально для твоего JS
+                }
             }), 201
         except Exception as e:
             log_error(f'Ошибка загрузки файла: {e}')
             return jsonify({'error': str(e)}), 500
-
-    return jsonify({
-            'success': True,
-            'message': "Файл успешно загружен",
-            'image': {
-                'id': image_id,
-                'filename': new_filename,
-                'url': f"http://localhost:8080/images/{new_filename}"   # ← добавь эту строку
-            }
-            }), 201
-
+        
+        
     # === СПИСОК ИЗОБРАЖЕНИЙ (для галереи) ===
     @app.route('/api/images')
     def get_images():
