@@ -1,79 +1,24 @@
-//Получим иконку для файла
+async function loadImages() {
+    try {
+        const response = await fetch('/api/images');
+        const images = await response.json();
 
-function getFileIcon(filename){
-    const ext = filename.split('.').pop().toLowerCase()
-    const icons = {'jpg': '📷', 'png': '📷', 'jpeg': '📷', 'gif': '🎥'}
-    return icons[ext] || '🗂️'
-}
+        const container = document.querySelector('.images');
 
+        container.innerHTML = '';
 
-//Создание эдемент изображения
+        images.forEach(img => {
+            const el = document.createElement('img');
+            el.src = `/uploads/${img.filename}`;
+            el.style.width = '200px';
+            el.style.margin = '10px';
 
-function createImageItem(image){
-    const item = document.createElement('div')
-    item.className = 'image-item'
-    item.dataset.id = image.id
+            container.appendChild(el);
+        });
 
-    const shotUrl = image.url.substring(0, 50) + '...'
-    const icon = getFileIcon(image.name)
-
-    item.innerHTML = `
-    
-    <div class = 'image-name'>
-        <div class = 'image-icon'>${icon}</div>
-        <span title = "${image.name}">${image.name}</span>
-    </div>
-
-    <div class = "image-url-wrapper">
-    <a href = "${image.url}" class = "image-url" target = "_blank" title = "${image.url}">${shotUrl}</a>
-    </div>
-
-    <div class = "image-delete">
-    <button class = 'delete-btn' onclick ="deleteImageById(${image.id})">
-    🗑️
-    </button>
-    </div>
-
-    `
-    return item
- }
-
- function showImages(){
-    const images = getAllImages()
-    const list = document.getElementById('images-list')
-    const empty = document.getElementById('empty-state')
-
-    if(images.length === 0){
-        list.innerHTML = '';
-        empty.style.display = 'block'
-        return
-    }
-    empty.style.display = 'none'
-
-    list.innerHTML = ''
-    images.forEach(image => {
-        list.appendChild(createImageItem(image))
-    });
- }
-
-
-
-function deleteImageById(id){
-    const list = document.getElementById('images-list')
-    deleteImage(id)
-    const item = document.querySelector(`[data-id="${id}"]`)
-    const empty = document.getElementById('empty-state')
-
-    console.log(item)
-    if(item){
-        item.style.display = 'none'
-       if(getAllImages().length === 0){
-         empty.style.display = 'block'
-       }
-
+    } catch (error) {
+        console.error('Ошибка загрузки изображений:', error);
     }
 }
 
-
-
- document.addEventListener('DOMContentLoaded', showImages)
+loadImages();
