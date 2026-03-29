@@ -9,7 +9,7 @@ async function loadImages() {
 
         images.forEach(img => {
             const el = document.createElement('img');
-            el.src = `/uploads/${img.filename}`;
+            el.src = `/images/${img.filename}`;
             el.style.width = '200px';
             el.style.margin = '10px';
 

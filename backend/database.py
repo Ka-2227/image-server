@@ -3,11 +3,20 @@ from typing import List, Tuple, Optional
 from config import Config
 from models import Image
 from utils import log_info, log_error, log_success
+import time
 
 class Database:
     @staticmethod
     def get_connection():
-        return psycopg2.connect(Config.DATABASE_URL)
+        for i in range(10):
+            try:
+                conn = psycopg2.connect(Config.DATABASE_URL)
+                print("✅ DB connected")
+                return conn
+            except Exception as e:
+                print(f"⏳ DB not ready ({i+1}/10): {e}")
+                time.sleep(2)
+        raise Exception("❌ Database connection failed")
 
     @staticmethod
     def init_db():

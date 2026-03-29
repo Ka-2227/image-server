@@ -12,7 +12,7 @@ class Config:
     ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif'}
     ALLOWED_MIME_TYPES = {'image/jpeg', 'image/png', 'image/gif'}
     
-    DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://postgres:admin@postgres:5432/image_db')
+    DATABASE_URL = os.getenv('DATABASE_URL', "postgresql://postgres:admin@postgres:5432/image_db")
     
     # Пагинация
     ITEMS_PER_PAGE = 10
